@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "UIkit-ativ",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -48,14 +52,14 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "32fea3ba-b828-4335-b45d-8b3afa00f484"
+        "projectId": "2fb39867-1b85-4735-9dcc-2c04c952328c"
       }
     },
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/32fea3ba-b828-4335-b45d-8b3afa00f484"
+      "url": "https://u.expo.dev/2fb39867-1b85-4735-9dcc-2c04c952328c"
     }
   }
 }
