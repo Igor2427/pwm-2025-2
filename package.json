@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "expo-ui-kit": "^0.1.6",
     "uikit": "^3.24.2"
   }
 }
