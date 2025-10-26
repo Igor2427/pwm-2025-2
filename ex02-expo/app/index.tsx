@@ -1,32 +1,24 @@
 import { useRouter } from "expo-router";
 import { useState } from "react";
-import {
-  Alert,
-  Button,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
-// import { FlatListExample } from "@/components/FlatListExample";
-import { SectionListExample } from "@/components/SectionListExample";
+import { Alert, Button, Image, Pressable } from "react-native";
+import { Block, Text, Input } from "expo-ui-kit";
 
 export default function Index() {
   const router = useRouter();
   const [idade, onChangeIdade] = useState("");
   const [showDetails, setShowDetails] = useState(true);
   const anoNasc = new Date().getFullYear() - parseInt(idade);
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Olá Turma!</Text>
-      <Image
-        style={styles.avatar}
-        source={require("@/assets/images/avatar.jpg")}
-        resizeMode="cover"
-      />
+    <Block style={styles.container}>
+      <Text h1 style={styles.title}>Olá Turma!</Text>
+      <Block center middle>
+        <Image
+          style={styles.avatar}
+          source={require("@/assets/images/avatar.jpg")}
+          resizeMode="cover"
+        />
+      </Block>
       <Pressable
         onPress={() => {
           setShowDetails(!showDetails);
@@ -39,14 +31,14 @@ export default function Index() {
         </Text>
       </Pressable>
       {!isNaN(anoNasc) && <Text>Você nasceu em {anoNasc}</Text>}
-      <TextInput
+      <Input
         style={styles.input}
         onChangeText={onChangeIdade}
         value={idade}
         placeholder="Qual a sua idade?"
         keyboardType="numeric"
       />
-      <View style={styles.buttonsContainer}>
+      <Block style={styles.buttonsContainer}>
         <Button
           onPress={() => Alert.alert("Botão OK pressionado")}
           title="     OK     "
@@ -59,23 +51,17 @@ export default function Index() {
           color="#841584"
           accessibilityLabel="Learn more about this purple button"
         />
-      </View>
+      </Block>
       <Button
         title="Ir para Lista de Tarefas"
         onPress={() => router.navigate("/taskList")}
       />
-      <View style={styles.space} />
-    </ScrollView>
+      <Block style={styles.space} />
+    </Block>
   );
 }
 
-// Exemplos de Listas
-function App() {
-  // return <FlatListExample />;
-  return <SectionListExample />;
-}
-
-const styles = StyleSheet.create({
+const styles = {
   container: {
     justifyContent: "flex-start",
     alignItems: "center",
@@ -111,4 +97,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: 250,
   },
-});
+};

@@ -2,7 +2,8 @@ import { addTask, deleteTask, getTasks, updateTask } from "@/api";
 import { CardTask } from "@/components/CardTask";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Button, FlatList, Text, TextInput, View } from "react-native";
+import { FlatList } from "react-native"; // Mantém só o FlatList (expo-ui-kit não tem)
+import { Block, Button, Text, Input } from "expo-ui-kit"; // 👈 UI Kit
 
 export default function TaskList() {
   const [description, setDescription] = useState("");
@@ -35,29 +36,53 @@ export default function TaskList() {
   });
 
   if (isFetching) {
-    return <Text>Loading...</Text>;
+    return (
+      <Block center middle>
+        <Text>Loading...</Text>
+      </Block>
+    );
   }
+
   if (error) {
-    return <Text>Error: {error.message}</Text>;
+    return (
+      <Block center middle>
+        <Text>Error: {error.message}</Text>
+      </Block>
+    );
   }
+
   if (!data) {
-    return <Text>No data available</Text>;
+    return (
+      <Block center middle>
+        <Text>No data available</Text>
+      </Block>
+    );
   }
+
   return (
-    <View>
-      <Text style={{ fonteSize: 24, fontWeight: "bold" }}>Task List</Text>
-      <View style={{ flexDirection: "row" }}>
-        <TextInput
+    <Block padding={15}>
+      <Text h2 bold center marginBottom={15}>
+        Task List
+      </Text>
+
+      {/* Campo de inserção */}
+      <Block row center space="between" marginBottom={10}>
+        <Input
           placeholder="Add a task"
           value={description}
           onChangeText={setDescription}
+          style={{ flex: 1, marginRight: 10 }}
         />
         <Button
-          title="Add"
           onPress={() => addMutation.mutate({ description })}
-        />
-      </View>
-      <View
+          color="primary"
+        >
+          Add
+        </Button>
+      </Block>
+
+      {/* Linha divisória */}
+      <Block
         style={{
           marginVertical: 5,
           backgroundColor: "grey",
@@ -66,6 +91,8 @@ export default function TaskList() {
           alignSelf: "center",
         }}
       />
+
+      {/* Lista */}
       <FlatList
         data={data.results}
         keyExtractor={(item) => item.objectId}
@@ -78,7 +105,12 @@ export default function TaskList() {
           />
         )}
       />
-      {isPending && <Text>Pending...</Text>}
-    </View>
+
+      {isPending && (
+        <Text center marginTop={10}>
+          Pending...
+        </Text>
+      )}
+    </Block>
   );
 }
