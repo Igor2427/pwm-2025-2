@@ -1,12 +1,12 @@
+// app/_layout.tsx
+import * as eva from "@eva-design/eva";
+import { ApplicationProvider } from "@ui-kitten/components";
 import { Stack } from "expo-router";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const queryClient = new QueryClient();
-
-export default function RootLayout() {
+export default function Layout() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Stack />
-    </QueryClientProvider>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Stack screenOptions={{ headerShown: false }} />
+    </ApplicationProvider>
   );
 }

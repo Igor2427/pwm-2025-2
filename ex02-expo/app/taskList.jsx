@@ -1,13 +1,13 @@
+import React, { useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Layout, Text, Input, Button, List, Card } from "@ui-kitten/components";
 import { addTask, deleteTask, getTasks, updateTask } from "@/api";
 import { CardTask } from "@/components/CardTask";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { FlatList } from "react-native"; // Mantém só o FlatList (expo-ui-kit não tem)
-import { Block, Button, Text, Input } from "expo-ui-kit"; // 👈 UI Kit
 
 export default function TaskList() {
   const [description, setDescription] = useState("");
   const queryClient = useQueryClient();
+
   const { data, isFetching, error, isPending } = useQuery({
     queryKey: ["todos"],
     queryFn: getTasks,
@@ -35,82 +35,46 @@ export default function TaskList() {
     },
   });
 
-  if (isFetching) {
-    return (
-      <Block center middle>
-        <Text>Loading...</Text>
-      </Block>
-    );
-  }
-
-  if (error) {
-    return (
-      <Block center middle>
-        <Text>Error: {error.message}</Text>
-      </Block>
-    );
-  }
-
-  if (!data) {
-    return (
-      <Block center middle>
-        <Text>No data available</Text>
-      </Block>
-    );
-  }
+  if (isFetching) return <Text>Carregando...</Text>;
+  if (error) return <Text>Erro: {error.message}</Text>;
+  if (!data) return <Text>Nenhuma tarefa encontrada.</Text>;
 
   return (
-    <Block padding={15}>
-      <Text h2 bold center marginBottom={15}>
-        Task List
+    <Layout style={{ flex: 1, padding: 20 }}>
+      <Text category="h3" style={{ marginBottom: 10 }}>
+        Lista de Tarefas
       </Text>
 
-      {/* Campo de inserção */}
-      <Block row center space="between" marginBottom={10}>
+      <Layout style={{ flexDirection: "row", alignItems: "center", gap: 10 }}>
         <Input
-          placeholder="Add a task"
+          placeholder="Adicionar tarefa"
           value={description}
           onChangeText={setDescription}
-          style={{ flex: 1, marginRight: 10 }}
+          style={{ flex: 1 }}
         />
-        <Button
-          onPress={() => addMutation.mutate({ description })}
-          color="primary"
-        >
-          Add
+        <Button onPress={() => addMutation.mutate({ description })}>
+          Adicionar
         </Button>
-      </Block>
+      </Layout>
 
-      {/* Linha divisória */}
-      <Block
-        style={{
-          marginVertical: 5,
-          backgroundColor: "grey",
-          width: "90%",
-          height: 2,
-          alignSelf: "center",
-        }}
-      />
+      <Layout style={{ marginVertical: 10, height: 1, backgroundColor: "#ccc" }} />
 
-      {/* Lista */}
-      <FlatList
+      <List
         data={data.results}
         keyExtractor={(item) => item.objectId}
-        renderItem={({ item: task }) => (
-          <CardTask
-            key={task.objectId}
-            task={task}
-            onDelete={deleteMutation.mutate}
-            onCheck={updateMutation.mutate}
-          />
+        renderItem={({ item }) => (
+          <Card style={{ marginVertical: 5 }}>
+            <CardTask
+              key={item.objectId}
+              task={item}
+              onDelete={deleteMutation.mutate}
+              onCheck={updateMutation.mutate}
+            />
+          </Card>
         )}
       />
 
-      {isPending && (
-        <Text center marginTop={10}>
-          Pending...
-        </Text>
-      )}
-    </Block>
+      {isPending && <Text>Processando...</Text>}
+    </Layout>
   );
 }

@@ -1,100 +1,94 @@
 import { useRouter } from "expo-router";
-import { useState } from "react";
-import { Alert, Button, Image, Pressable } from "react-native";
-import { Block, Text, Input } from "expo-ui-kit";
+import React, { useState } from "react";
+import { Alert } from "react-native";
+import { Layout, Text, Input, Button, Card } from "@ui-kitten/components";
 
 export default function Index() {
   const router = useRouter();
-  const [idade, onChangeIdade] = useState("");
+  const [idade, setIdade] = useState("");
   const [showDetails, setShowDetails] = useState(true);
+
   const anoNasc = new Date().getFullYear() - parseInt(idade);
 
   return (
-    <Block style={styles.container}>
-      <Text h1 style={styles.title}>Olá Turma!</Text>
-      <Block center middle>
-        <Image
-          style={styles.avatar}
-          source={require("@/assets/images/avatar.jpg")}
-          resizeMode="cover"
-        />
-      </Block>
-      <Pressable
-        onPress={() => {
-          setShowDetails(!showDetails);
+    <Layout
+      style={{
+        flex: 1,
+        justifyContent: "flex-start",
+        alignItems: "center",
+        backgroundColor: "beige",
+        padding: 15,
+      }}
+    >
+      <Text category="h1" style={{ marginBottom: 30 }}>
+        Olá Turma!
+      </Text>
+
+      <Card
+        style={{
+          width: 150,
+          height: 150,
+          borderRadius: 75,
+          overflow: "hidden",
+          marginBottom: 20,
         }}
       >
-        <Text numberOfLines={showDetails ? 0 : 1} style={styles.text}>
+        <Layout
+          style={{
+            flex: 1,
+            backgroundColor: "#ddd",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text category="label">(Avatar)</Text>
+        </Layout>
+      </Card>
+
+      <Button
+        appearance="ghost"
+        onPress={() => setShowDetails(!showDetails)}
+        style={{ marginBottom: 10 }}
+      >
+        {showDetails ? "Ocultar detalhes" : "Mostrar detalhes"}
+      </Button>
+
+      {showDetails && (
+        <Text style={{ marginBottom: 20, textAlign: "center" }}>
           Este é um App de exemplo da disciplina Programação Web e Mobile do
           Curso de Ciência da Computação da Universidade Católica de Pernambuco
           (semestre 2025.2)
         </Text>
-      </Pressable>
+      )}
+
       {!isNaN(anoNasc) && <Text>Você nasceu em {anoNasc}</Text>}
+
       <Input
-        style={styles.input}
-        onChangeText={onChangeIdade}
-        value={idade}
         placeholder="Qual a sua idade?"
         keyboardType="numeric"
+        value={idade}
+        onChangeText={setIdade}
+        style={{ width: 200, marginVertical: 12 }}
       />
-      <Block style={styles.buttonsContainer}>
+
+      <Layout style={{ flexDirection: "row", gap: 10, marginBottom: 15 }}>
         <Button
           onPress={() => Alert.alert("Botão OK pressionado")}
-          title="     OK     "
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
+          status="primary"
+        >
+          OK
+        </Button>
         <Button
           onPress={() => Alert.alert("Botão Cancel pressionado")}
-          title="Cancel"
-          color="#841584"
-          accessibilityLabel="Learn more about this purple button"
-        />
-      </Block>
-      <Button
-        title="Ir para Lista de Tarefas"
-        onPress={() => router.navigate("/taskList")}
-      />
-      <Block style={styles.space} />
-    </Block>
+          status="danger"
+        >
+          Cancel
+        </Button>
+      </Layout>
+
+      <Button onPress={() => router.navigate("/taskList")}>
+        Ir para Lista de Tarefas
+      </Button>
+    </Layout>
   );
 }
-
-const styles = {
-  container: {
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "beige",
-    padding: 15,
-  },
-  title: {
-    fontSize: 42,
-    fontWeight: "bold",
-    marginBottom: 30,
-  },
-  avatar: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-  },
-  text: {
-    fontSize: 16,
-    marginTop: 30,
-  },
-  input: {
-    height: 45,
-    width: 200,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-  },
-  space: {
-    height: 70,
-  },
-  buttonsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 250,
-  },
-};
